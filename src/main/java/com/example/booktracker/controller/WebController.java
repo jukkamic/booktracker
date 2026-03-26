@@ -3,8 +3,10 @@ package com.example.booktracker.controller;
 import com.example.booktracker.model.Book;
 import com.example.booktracker.model.BookStatus;
 import com.example.booktracker.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,10 +54,16 @@ public class WebController {
      * Process the add book form.
      *
      * @param book the book to add
-     * @return redirect to home page
+     * @param bindingResult validation results
+     * @param model the model to pass data to the view
+     * @return redirect to home page if valid, otherwise return to form
      */
     @PostMapping("/books")
-    public String addBook(@ModelAttribute Book book) {
+    public String addBook(@Valid @ModelAttribute Book book, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("statuses", BookStatus.values());
+            return "add-book";
+        }
         bookService.saveBook(book);
         return "redirect:/";
     }
@@ -81,10 +89,17 @@ public class WebController {
      *
      * @param id          the book ID
      * @param bookDetails the updated book details
-     * @return redirect to home page
+     * @param bindingResult validation results
+     * @param model the model to pass data to the view
+     * @return redirect to home page if valid, otherwise return to form
      */
     @PostMapping("/books/update/{id}")
-    public String updateBook(@PathVariable Long id, @ModelAttribute Book bookDetails) {
+    public String updateBook(@PathVariable Long id, @Valid @ModelAttribute Book bookDetails, 
+                             BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("statuses", BookStatus.values());
+            return "edit-book";
+        }
         bookService.updateBook(id, bookDetails);
         return "redirect:/";
     }

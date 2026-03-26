@@ -25,14 +25,23 @@
                     </div>
                     <div class="card-body">
                         <form th:action="@{/books/update/{id}(id=${book.id})}" th:object="${book}" method="post">
+                            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <span th:each="err : ${#fields.globalErrors()}" th:text="${err}">Global error</span>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
                                 <input type="text" 
                                        class="form-control" 
                                        id="title" 
                                        th:field="*{title}"
-                                       required
+                                       th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''"
                                        placeholder="Enter book title">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span th:each="err : ${#fields.errors('title')}" th:text="${err}">Title error</span>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -41,8 +50,12 @@
                                        class="form-control" 
                                        id="author" 
                                        th:field="*{author}"
-                                       required
+                                       th:classappend="${#fields.hasErrors('author')} ? 'is-invalid' : ''"
                                        placeholder="Enter author name">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('author')}">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span th:each="err : ${#fields.errors('author')}" th:text="${err}">Author error</span>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -50,7 +63,7 @@
                                 <select class="form-select" 
                                         id="status" 
                                         th:field="*{status}"
-                                        required>
+                                        th:classappend="${#fields.hasErrors('status')} ? 'is-invalid' : ''">
                                     <option value="">Select status</option>
                                     <option th:each="status : ${statuses}" 
                                             th:value="${status}"
@@ -58,6 +71,10 @@
                                         Status
                                     </option>
                                 </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('status')}">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span th:each="err : ${#fields.errors('status')}" th:text="${err}">Status error</span>
+                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -66,9 +83,14 @@
                                        class="form-control" 
                                        id="rating" 
                                        th:field="*{rating}"
+                                       th:classappend="${#fields.hasErrors('rating')} ? 'is-invalid' : ''"
                                        min="1" 
                                        max="5"
                                        placeholder="Leave blank if not rated">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('rating')}">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span th:each="err : ${#fields.errors('rating')}" th:text="${err}">Rating error</span>
+                                </div>
                             </div>
 
                             <div class="d-flex gap-2 mt-4">
