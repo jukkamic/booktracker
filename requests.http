@@ -1,0 +1,38 @@
+### 1. Add a new book (POST)
+POST http://localhost:8080/api/books
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "status": "READING",
+  "rating": 5
+}
+
+###
+
+### 2. Get all books (GET)
+GET http://localhost:8080/api/books
+
+###
+
+### 3. Get a specific book by ID (GET)
+GET http://localhost:8080/api/books/2
+
+###
+
+### 4. Update the book's status (PUT)
+PUT http://localhost:8080/api/books/1
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "status": "COMPLETED",
+  "rating": 5
+}
+
+###
+
+### 5. Delete the book (DELETE)
+DELETE http://localhost:8080/api/books/1
